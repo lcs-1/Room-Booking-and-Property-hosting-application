@@ -1,0 +1,30 @@
+<div class="px-4">
+  @switch (this.currentStep.id) {
+    @case (CATEGORY) {
+      <app-category-step [categoryName]="newListing.category"
+      (categoryChange)="onCategoryChange($event)"
+      (stepValidityChange)="onValidityChange($event)">
+      </app-category-step>
+    }
+    @case (LOCATION) {
+      <app-location-step [location]="newListing.location"
+                         (locationChange)="onLocationChange($event)"
+                         (stepValidityChange)="onValidityChange($event)">
+
+      </app-location-step>
+    }
+    @case (INFO) {
+      <app-info-step [infos]="newListing.infos"
+      (infoChange)="onInfoChange($event)"
+      (stepValidityChange)="onValidityChange($event)"></app-info-step>
+    }
+
+  }
+
+</div>
+<app-footer-step [currentStep]="currentStep"
+                [isAllStepsValid]="isAllStepsValid()"
+                [loading]="loadingCreation"
+                (finish)="createListing()"
+                (next)="nextStep()"
+                (previous)="previousStep()" ></app-footer-step>

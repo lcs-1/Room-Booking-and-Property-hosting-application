@@ -1,0 +1,15 @@
+# Angular/Frontend
+node_modules/
+dist/
+.angular/
+
+# Java/Backend
+target/
+*.class
+*.jar
+.idea/
+.gradle/
+
+# General
+*.log
+.DS_Store
