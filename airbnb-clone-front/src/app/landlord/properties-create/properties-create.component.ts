@@ -1,6 +1,14 @@
 import { ToastService } from './../../layout/toast.service';
-import { Category, type CategoryName } from './../../layout/navbar/category/category.model';
-import { NewListing, CreatedListing, type NewListingInfo } from './../model/listing.model';
+import {
+  Category,
+  type CategoryName,
+} from './../../layout/navbar/category/category.model';
+import {
+  NewListing,
+  CreatedListing,
+  type NewListingInfo,
+  Description,
+} from './../model/listing.model';
 import { Component, effect, inject } from '@angular/core';
 import { DynamicDialogRef } from 'primeng/dynamicdialog';
 import { LandlordListingService } from '../landlord-listing.service';
@@ -8,27 +16,36 @@ import { AuthService } from '../../core/auth/auth.service';
 import { Router } from '@angular/router';
 import type { Step } from './step.model';
 import { NewListingPicture } from '../model/picture.model';
-import {LocationStepComponent} from "./step/location-step/location-step.component";
+import { LocationStepComponent } from './step/location-step/location-step.component';
 import type { HttpErrorResponse } from '@angular/common/http';
 import type { State } from '../../core/model/state.model';
-import { CategoryStepComponent } from "./step/category-step/category-step.component";
-import { FooterStepComponent } from "../../shared/footer-step/footer-step.component";
-import { InfoStepComponent } from "./step/info-step/info-step.component";
+import { CategoryStepComponent } from './step/category-step/category-step.component';
+import { FooterStepComponent } from '../../shared/footer-step/footer-step.component';
+import { InfoStepComponent } from './step/info-step/info-step.component';
+import { PictureStepComponent } from './step/picture-step/picture-step.component';
+import { DescriptionStepComponent } from './step/description-step/description-step.component';
 
 @Component({
   selector: 'app-properties-create',
   standalone: true,
-  imports: [CategoryStepComponent, FooterStepComponent, LocationStepComponent, InfoStepComponent],
+  imports: [
+    CategoryStepComponent,
+    FooterStepComponent,
+    LocationStepComponent,
+    InfoStepComponent,
+    PictureStepComponent,
+    DescriptionStepComponent,
+  ],
   templateUrl: './properties-create.component.html',
-  styleUrl: './properties-create.component.scss'
+  styleUrl: './properties-create.component.scss',
 })
 export class PropertiesCreateComponent {
-  CATEGORY  = "cetegory";
-  LOCATION = "location";
-  INFO = "info";
-  PHOTOS = "photos";
-  DESCRIPTION = "description";
-  PRICE = "price";
+  CATEGORY = 'cetegory';
+  LOCATION = 'location';
+  INFO = 'info';
+  PHOTOS = 'photos';
+  DESCRIPTION = 'description';
+  PRICE = 'price';
 
   dialogDynamicRef = inject(DynamicDialogRef);
   listingService = inject(LandlordListingService);
@@ -36,143 +53,147 @@ export class PropertiesCreateComponent {
   userService = inject(AuthService);
   router = inject(Router);
 
-
   steps: Step[] = [
     {
       id: this.CATEGORY,
       idNext: this.LOCATION,
       idPrevious: null,
-      isValid: false
+      isValid: false,
     },
     {
       id: this.LOCATION,
       idNext: this.INFO,
       idPrevious: this.CATEGORY,
-      isValid: false
+      isValid: false,
     },
     {
       id: this.INFO,
       idNext: this.PHOTOS,
       idPrevious: this.LOCATION,
-      isValid: false
+      isValid: false,
     },
     {
       id: this.PHOTOS,
       idNext: this.DESCRIPTION,
       idPrevious: this.INFO,
-      isValid: false
+      isValid: false,
     },
     {
       id: this.DESCRIPTION,
       idNext: this.PRICE,
       idPrevious: this.PHOTOS,
-      isValid: false
+      isValid: false,
     },
     {
       id: this.PRICE,
       idNext: null,
       idPrevious: this.DESCRIPTION,
-      isValid: false
-    }
-  ]
+      isValid: false,
+    },
+  ];
 
   currentStep = this.steps[0];
 
-  newListing: NewListing ={
-    category: "AMAZING_VIEWS",
+  newListing: NewListing = {
+    category: 'AMAZING_VIEWS',
     infos: {
-      guests: {value: 0},
-      bedrooms: {value: 0},
-      beds: {value: 0},
-      baths: {value: 0}
+      guests: { value: 0 },
+      bedrooms: { value: 0 },
+      beds: { value: 0 },
+      baths: { value: 0 },
     },
-    location:"",
+    location: '',
     pictures: new Array<NewListingPicture>(),
     description: {
-      title: {value: ""},
-      description: {value: ""}
+      title: { value: '' },
+      description: { value: '' },
     },
-    price: {value: 0}
+    price: { value: 0 },
   };
 
   loadingCreation = false;
 
-  constructor(){
+  constructor() {
     this.loadingCreation = true;
     this.listingService.create(this.newListing);
   }
 
-  createListing(): void{
+  createListing(): void {
     this.loadingCreation = true;
     this.listingService.create(this.newListing);
-
   }
-  ngOnDestroy(): void{
+  ngOnDestroy(): void {
     this.listingService.resetListingCreation();
   }
 
   listenListingCreation(): void {
-    effect(()=>{
+    effect(() => {
       let createdListingState = this.listingService.createSig();
-      if(createdListingState.status === "OK"){
+      if (createdListingState.status === 'OK') {
         this.onCreateOk(createdListingState);
-      } else if(createdListingState.status === "ERROR"){
+      } else if (createdListingState.status === 'ERROR') {
         this.onCreateError();
       }
     });
-
   }
   onCreateOk(createdListingState: State<CreatedListing>) {
     this.loadingCreation = false;
     this.toastService.send({
-        severity: "success",
-        summary: "Success",
-        detail: "Your listing has been created successfully!",
-      });
+      severity: 'success',
+      summary: 'Success',
+      detail: 'Your listing has been created successfully!',
+    });
     this.dialogDynamicRef.close(createdListingState.value?.publicId);
     this.userService.fetch(true);
-
   }
 
-  listenFetchUser(){
-    effect(()=>{
-      if(this.userService.fetchUser().status === "OK"
-        && this.listingService.createSig().status === "OK"){
-          this.router.navigate(["landlord","propeties"]);
-        }
+  listenFetchUser() {
+    effect(() => {
+      if (
+        this.userService.fetchUser().status === 'OK' &&
+        this.listingService.createSig().status === 'OK'
+      ) {
+        this.router.navigate(['landlord', 'propeties']);
+      }
     });
   }
 
-  private onCreateError(){
+  private onCreateError() {
     this.loadingCreation = false;
     this.toastService.send({
-      severity: "error", summary: "Error", detail: "Couldn't create your listing, please try again later."
+      severity: 'error',
+      summary: 'Error',
+      detail: "Couldn't create your listing, please try again later.",
     });
   }
 
-
   nextStep(): void {
-    if(this.currentStep.idNext !== null){
-      this.currentStep = this.steps.filter((step:Step) => step.id === this.currentStep.idNext)[0];
+    if (this.currentStep.idNext !== null) {
+      this.currentStep = this.steps.filter(
+        (step: Step) => step.id === this.currentStep.idNext
+      )[0];
     }
   }
   previousStep(): void {
-    if(this.currentStep.idPrevious !== null){
-      this.currentStep = this.steps.filter((step:Step) => step.id === this.currentStep.idPrevious)[0];
+    if (this.currentStep.idPrevious !== null) {
+      this.currentStep = this.steps.filter(
+        (step: Step) => step.id === this.currentStep.idPrevious
+      )[0];
     }
   }
 
-  isAllStepsValid(): boolean{
-    return this.steps.filter(step => step.isValid).length === this.steps.length;
+  isAllStepsValid(): boolean {
+    return (
+      this.steps.filter((step) => step.isValid).length === this.steps.length
+    );
   }
 
-  onCategoryChange(newCategory: CategoryName): void{
+  onCategoryChange(newCategory: CategoryName): void {
     this.newListing.category = newCategory;
   }
 
-  onValidityChange(validity: boolean){
+  onValidityChange(validity: boolean) {
     this.currentStep.isValid = validity;
-
   }
 
   onInfoChange(newInfo: NewListingInfo) {
@@ -183,5 +204,11 @@ export class PropertiesCreateComponent {
     this.newListing.location = newLocation;
   }
 
-}
+  onPictureChange(newPictures: NewListingPicture[]) {
+    this.newListing.pictures = newPictures;
+  }
 
+  onDescriptionChange(newDescription: Description) {
+    this.newListing.description = newDescription;
+  }
+}

@@ -1,19 +1,23 @@
-import { Component, EventEmitter, input } from '@angular/core';
+import { Component, EventEmitter, input, Output } from '@angular/core';
 import { NewListingPicture } from '../../../model/picture.model';
 import { InputTextModule } from "primeng/inputtext";
+import { FaIconComponent } from "@fortawesome/angular-fontawesome";
 
 @Component({
   selector: 'app-picture-step',
   standalone: true,
-  imports: [InputTextModule],
+  imports: [InputTextModule, FaIconComponent],
   templateUrl: './picture-step.component.html',
   styleUrl: './picture-step.component.scss'
 })
 export class PictureStepComponent {
+
   pictures = input.required<Array<NewListingPicture>>();
 
+  @Output()
   pictureChange = new EventEmitter<Array<NewListingPicture>>();
 
+  @Output()
   stepValidityChange = new EventEmitter<boolean>();
 
   onUploadNewPicture(target: EventTarget | null){
@@ -49,5 +53,12 @@ export class PictureStepComponent {
       return null;
     }
     return htmlInputtarget.files;
+  }
+
+  onTrashPicture(pictureToDelete: NewListingPicture) {
+    const indexToDelete = this.pictures().findIndex(picture => picture.file.name === pictureToDelete.file.name);
+    this.pictures().splice(indexToDelete,1);
+    this.validatePictures();
+
   }
 }

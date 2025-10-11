@@ -24,6 +24,19 @@
     ></app-info-step>
   </div>
 
+  } @case (PHOTOS) {
+  <app-picture-step
+    [pictures]="newListing.pictures"
+    (pictureChange)="onPictureChange($event)"
+    (stepValidityChange)="onValidityChange($event)"
+  ></app-picture-step>
+  } @case (DESCRIPTION) {
+  <app-description-step
+    [description]="newListing.description"
+    (descriptionChange)="onDescriptionChange($event)"
+    (stepValidityChange)="onValidityChange($event)"
+  >
+  </app-description-step>
   } }
 </div>
 <app-footer-step
