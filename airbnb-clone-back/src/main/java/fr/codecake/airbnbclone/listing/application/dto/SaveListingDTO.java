@@ -8,15 +8,14 @@ import fr.codecake.airbnbclone.listing.domain.BookingCategory;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 
-
 import java.util.List;
 
 public class SaveListingDTO {
+
     @NotNull
     BookingCategory category;
 
-    @NotNull
-    String location;
+    @NotNull String location;
 
     @NotNull @Valid
     ListingInfoDTO infos;
@@ -25,7 +24,7 @@ public class SaveListingDTO {
     DescriptionDTO description;
 
     @NotNull @Valid
-    PriceVO priceVO;
+    PriceVO price;
 
     @NotNull
     List<PictureDTO> pictures;
@@ -54,20 +53,20 @@ public class SaveListingDTO {
         this.infos = infos;
     }
 
-    public DescriptionDTO getDescriptionDTO() {
+    public DescriptionDTO getDescription() {
         return description;
     }
 
-    public void setDescriptionDTO(DescriptionDTO descriptionDTO) {
-        this.description = descriptionDTO;
+    public void setDescription(DescriptionDTO description) {
+        this.description = description;
     }
 
-    public PriceVO getPriceVO() {
-        return priceVO;
+    public PriceVO getPrice() {
+        return price;
     }
 
-    public void setPriceVO(PriceVO priceVO) {
-        this.priceVO = priceVO;
+    public void setPrice(PriceVO price) {
+        this.price = price;
     }
 
     public List<PictureDTO> getPictures() {

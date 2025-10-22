@@ -2,6 +2,7 @@ package fr.codecake.airbnbclone.listing.presentation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.codecake.airbnbclone.listing.application.LandlordService;
+import fr.codecake.airbnbclone.listing.application.dto.CreatedListingDTO;
 import fr.codecake.airbnbclone.listing.application.dto.SaveListingDTO;
 import fr.codecake.airbnbclone.listing.application.dto.sub.PictureDTO;
 import fr.codecake.airbnbclone.user.application.UserException;
@@ -45,14 +46,14 @@ public class LandlordResource {
     }
 
     @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Object> create(
+    public ResponseEntity<CreatedListingDTO> create(
             MultipartHttpServletRequest request,
             @RequestPart(name="dto") String saveListingDTOString
     ) throws IOException {
         List<PictureDTO> pictures= request.getFileMap()
                 .values()
                 .stream()
-                .map(mapMultiPartFileToPictureDTO())
+                .map(mapMultipartFileToPictureDTO())
                 .toList();
         SaveListingDTO saveListingDTO = objectMapper.readValue(saveListingDTOString, SaveListingDTO.class);
         saveListingDTO.setPictures(pictures);
@@ -70,7 +71,7 @@ public class LandlordResource {
         }
     }
 
-    private static Function<MultipartFile, PictureDTO> mapMultiPartFileToPictureDTO() {
+    private static Function<MultipartFile, PictureDTO> mapMultipartFileToPictureDTO() {
         return multipartFile -> {
             try {
                 return new PictureDTO(multipartFile.getBytes(), multipartFile.getContentType(), false);

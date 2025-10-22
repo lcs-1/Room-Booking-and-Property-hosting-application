@@ -17,14 +17,14 @@ public interface ListingMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdDate", ignore = true)
     @Mapping(target = "pictures", ignore = true)
-    @Mapping(target = "title", source = "descriptionDTO.title.value")
-    @Mapping(target = "description", source = "descriptionDTO.description.value")
+    @Mapping(target = "title", source = "description.title.value")
+    @Mapping(target = "description", source = "description.description.value")
     @Mapping(target = "bedrooms", source = "infos.bedrooms.value")
     @Mapping(target = "guests", source = "infos.guests.value")
     @Mapping(target = "bookingCategory", source = "category")
     @Mapping(target = "beds", source = "infos.beds.value")
     @Mapping(target = "bathrooms", source = "infos.baths.value")
-    @Mapping(target = "price", source = "priceVO.value")
+    @Mapping(target = "price", source = "price.value")
     Listing saveListingDTOToListing(SaveListingDTO saveListingDTO);
 
     CreatedListingDTO listingToCreatedListingDTO(Listing listing);
