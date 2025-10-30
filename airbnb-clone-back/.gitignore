@@ -31,3 +31,19 @@ build/
 
 ### VS Code ###
 .vscode/
+
+
+target/
+.idea/
+*.iml
+.mvn/
+mvnw
+mvnw.cmd
+*.log
+logs/
+*.local
+application-local.yml
+lib/
+.DS_Stores
+*.swp
+*~
