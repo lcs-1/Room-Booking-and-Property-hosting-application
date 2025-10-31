@@ -28,4 +28,14 @@ public interface ListingMapper {
     Listing saveListingDTOToListing(SaveListingDTO saveListingDTO);
 
     CreatedListingDTO listingToCreatedListingDTO(Listing listing);
+
+    @Mapping(target = "cover", source = "pictures")
+    List<DisplayCardLIstingDTO> listingToDisplayCardListingDTOs(List<Listing> listings);
+
+    @Mapping(target = "cover", source = "pictures", qualifiedByName = "extract-cover")
+    DisplayCardLIstingDTO listingToDisplayCardListingDTO(Listing listing);
+
+    default PriceVO mapPriceToPriceVO(int price){
+        return new PriceVO(price);
+    }
 }
