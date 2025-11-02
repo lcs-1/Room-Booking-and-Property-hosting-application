@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { computed, inject, Injectable, signal, type WritableSignal } from '@angular/core';
-import type { CreatedListing, NewListing } from './model/listing.model';
+import type { CardListing, CreatedListing, NewListing } from './model/listing.model';
 import { State } from '../core/model/state.model';
 import { environment } from '../../environments/environment';
 
@@ -12,8 +12,13 @@ export class LandlordListingService {
   constructor() { }
 
   private create$: WritableSignal<State<CreatedListing>> = signal(State.Builder<CreatedListing>().forInit());
-
   createSig = computed(() => this.create$());
+
+  private getAll$: WritableSignal<State<Array<CardListing>>> = signal(State.Builder<Array<CardListing>>().forInit());
+  getAllSig = computed(()=> this.create$());
+
+  private delete$: WritableSignal<State<string>> = signal(State.Builder<string>().forInit());
+  deleteSig = computed(()=> this.create$());
 
   create(newListing: NewListing): void{
     const formData = new FormData();
@@ -33,5 +38,26 @@ export class LandlordListingService {
 
   resetListingCreation(): void{
     this.create$.set(State.Builder<CreatedListing>().forInit());
+  }
+
+  getAll(): void{
+    this.http.get<Array<CardListing>>(`${environment.API_URL}/landlord-listing/get-all`)
+      .subscribe({
+        next: listings => this.getAll$.set(State.Builder<Array<CardListing>>().forSuccess(listings)),
+        error: err => this.create$.set(State.Builder<CardListing>().forError(err)),
+      })
+  }
+
+  delete(publicId: string): void{
+    const params = new HttpParams().set("publicId",publicId);
+    this.http.delete<string>(`${environment.API_URL}/landlord-listing/delete`,{params})
+      .subscribe({
+        next: publicId => this.delete$.set(State.Builder<string>().forSuccess(publicId)),
+        error: err => this.create$.set(State.Builder<CardListing>().forError(err)),
+      })
+  }
+
+  resetDelete(): void {
+    this.delete$.set(State.Builder<string>().forInit());
   }
 }

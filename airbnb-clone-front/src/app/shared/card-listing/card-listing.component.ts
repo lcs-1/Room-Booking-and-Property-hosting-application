@@ -1,0 +1,74 @@
+import { Location } from '@angular/common';
+import { CountryService } from './../../landlord/properties-create/step/location-step/country.service';
+import { CategoryService } from './../../layout/navbar/category/category.service';
+import { CardListing } from './../../landlord/model/listing.model';
+import { Component, effect, EventEmitter, inject, input, Output } from '@angular/core';
+import type { BookedListing } from '../../tenant/model/booking.model';
+import { Router } from '@angular/router';
+
+@Component({
+  selector: 'app-card-listing',
+  standalone: true,
+  imports: [],
+  templateUrl: './card-listing.component.html',
+  styleUrl: './card-listing.component.scss'
+})
+export class CardListingComponent {
+  listing = input.required<CardListing | BookedListing>();
+  cardMode = input<"landlord" | "booking">();
+
+  @Output()
+  deleteListing = new EventEmitter<CardListing>();
+  @Output()
+  cancelBooking = new EventEmitter<BookedListing>();
+
+  bookingListing: BookedListing | undefined;
+  CardListing: CardListing | undefined;
+
+  router: Router = inject(Router);
+  CategoryService = inject(CategoryService);
+  CountryService = inject(CountryService);
+
+  constructor() {
+    this.listenToListing()
+  }
+
+  private listenToListing(): void {
+    effect(():void =>{
+      const listing: BookedListing | CardListing = this.listing();
+      this.CountryService.getCountryByCode(listing.location)
+        .subscribe({
+          next: country =>{
+            if (listing){
+            this.listing().location = country.region + ", " + country.name.common
+          }
+          }
+        })
+    })
+  }
+
+  private listenToCardMode(): void {
+    effect(() =>{
+      const cardMode = this.cardMode();
+      if(cardMode && cardMode === "booking") {
+        this.bookingListing = this.listing() as BookedListing;
+      } else{
+        this.CardListing = this.listing() as CardListing;
+      }
+    });
+  }
+
+  onDeleteListing(displayCardListingDTO: CardListing){
+    this.deleteListing.emit(displayCardListingDTO);
+  }
+
+  onCancelBooking(bookedListing: BookedListing){
+    this.cancelBooking.emit(bookedListing);
+  }
+
+  onClickCard(publicId: string){
+    this.router.navigate(['listing'],
+        {queryParams: {id: publicId}}
+    );
+  }
+}
