@@ -1,1 +1,36 @@
-<p>properties works!</p>
+<div class="properties-container">
+  <!-- Header Section -->
+  <div class="properties-header">
+    <h1>My Properties</h1>
+    <p>Add new and remove properties</p>
+  </div>
+
+  <!-- Loading State -->
+  @if(loadingFetchAll) {
+    <div class="loading-overlay">
+      <fa-icon [icon]="'circle-notch'" size="3x" animation="spin" class="text-primary"></fa-icon>
+    </div>
+  }
+
+  <!-- Listings Grid -->
+  @if (listings && listings.length > 0) {
+    <div class="listing-grid">
+      @for (listing of listings; track listing.publicId) {
+        <app-card-listing
+          [listing]="listing"
+          [cardMode]="'landlord'"
+          (deleteListing)="onDeleteListing($event)"
+        >
+        </app-card-listing>
+      }
+    </div>
+  }
+
+  <!-- Empty State -->
+  @if (!loadingFetchAll && (!listings || listings.length === 0)) {
+    <div class="empty-state">
+      <h2>No property present</h2>
+      <p class="text-lg">It seems you don't have any properties yet</p>
+    </div>
+  }
+</div>

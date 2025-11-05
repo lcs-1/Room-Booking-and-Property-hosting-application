@@ -96,7 +96,7 @@ public class SecurityUtils {
 
     private static Stream<String> getAuthorities(Authentication authentication){
         Collection<? extends GrantedAuthority> authorities = authentication
-                instanceof JwtAuthenticationToken jwtAuthenticationToken?
+                instanceof JwtAuthenticationToken jwtAuthenticationToken ?
                 extractAuthorityFromClaims(jwtAuthenticationToken.getToken().getClaims()): authentication.getAuthorities();
         return authorities.stream().map(GrantedAuthority::getAuthority);
     }

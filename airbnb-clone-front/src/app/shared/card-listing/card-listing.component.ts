@@ -1,15 +1,17 @@
-import { Location } from '@angular/common';
+import { Location, DatePipe, CurrencyPipe } from '@angular/common';
 import { CountryService } from './../../landlord/properties-create/step/location-step/country.service';
 import { CategoryService } from './../../layout/navbar/category/category.service';
 import { CardListing } from './../../landlord/model/listing.model';
 import { Component, effect, EventEmitter, inject, input, Output } from '@angular/core';
 import type { BookedListing } from '../../tenant/model/booking.model';
 import { Router } from '@angular/router';
+import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
+
 
 @Component({
   selector: 'app-card-listing',
   standalone: true,
-  imports: [],
+  imports: [DatePipe, CurrencyPipe, FontAwesomeModule],
   templateUrl: './card-listing.component.html',
   styleUrl: './card-listing.component.scss'
 })
@@ -23,11 +25,11 @@ export class CardListingComponent {
   cancelBooking = new EventEmitter<BookedListing>();
 
   bookingListing: BookedListing | undefined;
-  CardListing: CardListing | undefined;
+  cardListing: CardListing | undefined;
 
   router: Router = inject(Router);
-  CategoryService = inject(CategoryService);
-  CountryService = inject(CountryService);
+  categoryService = inject(CategoryService);
+  countryService = inject(CountryService);
 
   constructor() {
     this.listenToListing()
@@ -36,7 +38,7 @@ export class CardListingComponent {
   private listenToListing(): void {
     effect(():void =>{
       const listing: BookedListing | CardListing = this.listing();
-      this.CountryService.getCountryByCode(listing.location)
+      this.countryService.getCountryByCode(listing.location)
         .subscribe({
           next: country =>{
             if (listing){
@@ -53,7 +55,7 @@ export class CardListingComponent {
       if(cardMode && cardMode === "booking") {
         this.bookingListing = this.listing() as BookedListing;
       } else{
-        this.CardListing = this.listing() as CardListing;
+        this.cardListing = this.listing() as CardListing;
       }
     });
   }

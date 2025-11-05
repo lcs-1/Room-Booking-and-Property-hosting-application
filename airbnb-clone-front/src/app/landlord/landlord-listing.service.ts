@@ -15,10 +15,10 @@ export class LandlordListingService {
   createSig = computed(() => this.create$());
 
   private getAll$: WritableSignal<State<Array<CardListing>>> = signal(State.Builder<Array<CardListing>>().forInit());
-  getAllSig = computed(()=> this.create$());
+  getAllSig = computed(()=> this.getAll$());
 
   private delete$: WritableSignal<State<string>> = signal(State.Builder<string>().forInit());
-  deleteSig = computed(()=> this.create$());
+  deleteSig = computed(()=> this.delete$());
 
   create(newListing: NewListing): void{
     const formData = new FormData();

@@ -1,13 +1,33 @@
-.avatar{
-  object-fit: contain;
+// avatar.component.scss
+.avatar-sm {
+  width: 32px;
+  height: 32px;
 }
 
-.avatar-sm{
-  width: 35.75px;
-  height:35.75px;;
+.avatar-xl {
+  width: 48px;
+  height: 48px;
 }
 
-.avatar-xl{
-  width: 50px;
-  height:50px;
+.unknown-user {
+  background-color: #e0e0e0;
+  border-radius: 50%;
+  color: #666;
+}
+
+.authenticated-user {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 50%;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+// Responsive sizing for initials
+.avatar-sm .user-initials {
+  font-size: 12px;
+}
+
+.avatar-xl .user-initials {
+  font-size: 16px;
 }

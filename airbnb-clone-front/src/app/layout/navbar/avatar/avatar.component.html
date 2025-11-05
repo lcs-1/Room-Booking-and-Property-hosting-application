@@ -1,9 +1,17 @@
-<!-- src/app/avatar/avatar.component.html -->
+<!-- avatar.component.html -->
 <div class="flex align-content-center">
-  @if (imageUrl() && imageUrl() !== '') {
+  @if (hasValidImageUrl() && !showFallback()) {
+    <!-- Show actual image when available -->
     <img [src]="imageUrl()" alt="user-avatar" class="border-round-3xl avatar"
+         [ngClass]="avatarSize()" appImgFallback (imgFallback)="onImageFallback()">
+  } @else if (isAuthenticated() && userInitials()) {
+    <!-- Show initials when logged in but image unavailable -->
+    <div class="flex align-items-center justify-content-center authenticated-user"
          [ngClass]="avatarSize()">
+      <span class="user-initials">{{ userInitials() }}</span>
+    </div>
   } @else {
+    <!-- Show default icon when not authenticated or no user info -->
     <div class="flex align-items-center justify-content-center unknown-user"
          [ngClass]="avatarSize()">
       <fa-icon [icon]="['fas', 'user']" class="text-dark"></fa-icon>

@@ -9,8 +9,8 @@ import java.util.UUID;
 
 public interface ListingRepository extends JpaRepository<Listing, Long> {
 
-    @Query("SELECT listing FROM Listing listing LEFT JOIN FETCH listing.pictures picture"+
-            "WHERE listing.landlordPublicId = :landlordPublicId AND picture.isCover=true")
+    @Query("SELECT listing FROM Listing listing LEFT JOIN FETCH listing.pictures picture" +
+            " WHERE listing.landlordPublicId = :landlordPublicId AND picture.isCover=true")
     List<Listing> findAllByLandlordPublicIdFetchCoverPicture(UUID landlordPublicId);
 
     long deleteByPublicIdAndLandlordPublicId(UUID publicId,UUID landlordPublicId);

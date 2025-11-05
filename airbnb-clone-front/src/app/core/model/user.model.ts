@@ -1,6 +1,6 @@
 export interface User{
   firstName?: string;
-  lasrName?: string;
+  lastName?: string;
   email?: string;
   imageUrl?: string;
   authorities?: string[];
