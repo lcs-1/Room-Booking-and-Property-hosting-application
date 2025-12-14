@@ -33,6 +33,7 @@ export class CardListingComponent {
 
   constructor() {
     this.listenToListing()
+    this.listenToCardMode()
   }
 
   private listenToListing(): void {

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.codecake.airbnbclone.infrastructure.config.SecurityUtils;
 import fr.codecake.airbnbclone.listing.application.LandlordService;
 import fr.codecake.airbnbclone.listing.application.dto.CreatedListingDTO;
-import fr.codecake.airbnbclone.listing.application.dto.DisplayCardLIstingDTO;
+import fr.codecake.airbnbclone.listing.application.dto.DisplayCardListingDTO;
 import fr.codecake.airbnbclone.listing.application.dto.SaveListingDTO;
 import fr.codecake.airbnbclone.listing.application.dto.sub.PictureDTO;
 import fr.codecake.airbnbclone.sharedkernel.service.State;
@@ -87,9 +87,9 @@ public class LandlordResource {
 
     @GetMapping(value = "/get-all")
     @PreAuthorize("hasAnyRole('"+ SecurityUtils.ROLE_LANDLORD + "')")
-    public ResponseEntity<List<DisplayCardLIstingDTO>> getALl(){
+    public ResponseEntity<List<DisplayCardListingDTO>> getALl(){
         ReadUserDTO connectedUser = userService.getAuthenticatedUserFromSecurityContext();
-        List<DisplayCardLIstingDTO> allProperties = landlordService.getAllProperties(connectedUser);
+        List<DisplayCardListingDTO> allProperties = landlordService.getAllProperties(connectedUser);
         return ResponseEntity.ok(allProperties);
     }
 

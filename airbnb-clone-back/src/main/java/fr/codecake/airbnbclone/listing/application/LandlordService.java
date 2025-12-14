@@ -1,7 +1,7 @@
 package fr.codecake.airbnbclone.listing.application;
 
 import fr.codecake.airbnbclone.listing.application.dto.CreatedListingDTO;
-import fr.codecake.airbnbclone.listing.application.dto.DisplayCardLIstingDTO;
+import fr.codecake.airbnbclone.listing.application.dto.DisplayCardListingDTO;
 import fr.codecake.airbnbclone.listing.application.dto.SaveListingDTO;
 import fr.codecake.airbnbclone.listing.domain.Listing;
 import fr.codecake.airbnbclone.listing.mapper.ListingMapper;
@@ -45,7 +45,7 @@ public class LandlordService {
     }
 
     @Transactional(readOnly = true)
-    public List<DisplayCardLIstingDTO> getAllProperties(ReadUserDTO landlord){
+    public List<DisplayCardListingDTO> getAllProperties(ReadUserDTO landlord){
         List<Listing> properties = listingRepository.findAllByLandlordPublicIdFetchCoverPicture(landlord.publicId());
         return listingMapper.listingToDisplayCardListingDTOs(properties);
     }
