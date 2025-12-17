@@ -1,4 +1,4 @@
-export interface NewListingPicture{
+export interface NewListingPicture {
   file: File,
   urlDisplay: string
 }

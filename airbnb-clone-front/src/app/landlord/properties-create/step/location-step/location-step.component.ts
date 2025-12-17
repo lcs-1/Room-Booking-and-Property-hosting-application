@@ -1,14 +1,17 @@
-import { Component, EventEmitter, input, Output } from '@angular/core';
-import { LocationMapComponent } from "./location-map/location-map.component";
+import {Component, EventEmitter, input, Output} from '@angular/core';
+import {LocationMapComponent} from "./location-map/location-map.component";
 
 @Component({
   selector: 'app-location-step',
   standalone: true,
-  imports: [LocationMapComponent],
+  imports: [
+    LocationMapComponent
+  ],
   templateUrl: './location-step.component.html',
   styleUrl: './location-step.component.scss'
 })
 export class LocationStepComponent {
+
   location = input.required<string>();
 
   @Output()
@@ -17,8 +20,7 @@ export class LocationStepComponent {
   @Output()
   stepValidityChange = new EventEmitter<boolean>();
 
-
-  onLocationChange(location: string){
+  onLocationChange(location: string) {
     this.locationChange.emit(location);
     this.stepValidityChange.emit(true);
   }

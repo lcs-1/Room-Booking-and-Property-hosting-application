@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { LocationStepComponent } from './location-step.component';
+import {LocationStepComponent} from './location-step.component';
 
 describe('LocationStepComponent', () => {
   let component: LocationStepComponent;
@@ -11,7 +11,7 @@ describe('LocationStepComponent', () => {
       imports: [LocationStepComponent]
     })
     .compileComponents();
-    
+
     fixture = TestBed.createComponent(LocationStepComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

@@ -1,28 +1,14 @@
 <div class="my-4 flex justify-content-center align-items-center">
   <p-autoComplete
-  [styleClass]="'autocomplete-airbnb'"
-  [panelStyleClass]="'country-panel'"
-  [(ngModel)]="currentLocation"
-  (onSelect)="onLocationChange($event)"
-  [suggestions]="filteredCountries"
-  (completeMethod)="search($event)"
-  [dropdown]="true"
-  [optionLabel]="formatLabel"
-  [placeholder]="placeholder()">
-
-  <ng-template let-country pTemplate="item">
-    <img [src]="'https://flagcdn.com/w20/' + country.cca2.toLowerCase() + '.png'"
-         width="20" height="14" alt="{{ country.name.common }} flag" loading="lazy" />
-    <span class="ml-2">{{ country.name.common }}</span>
-  </ng-template>
-
-  <ng-template let-country pTemplate="selectedItem">
-    <img [src]="'https://flagcdn.com/w20/' + country.cca2.toLowerCase() + '.png'"
-         width="20" height="14" alt="{{ country.name.common }} flag" loading="lazy" />
-    <span class="ml-2">{{ country.name.common }}</span>
-  </ng-template>
-</p-autoComplete>
-
+    [styleClass]="'autocomplete-airbnb'"
+    [panelStyleClass]="'country-panel'"
+    [ngModel]="currentLocation"
+    (onSelect)="onLocationChange($event)"
+    [suggestions]="filteredCountries"
+    (completeMethod)="search($event)"
+    [dropdown]="true"
+    [optionLabel]="formatLabel"
+    [placeholder]="placeholder()"></p-autoComplete>
 </div>
 <div leaflet
      [leafletOptions]="options"

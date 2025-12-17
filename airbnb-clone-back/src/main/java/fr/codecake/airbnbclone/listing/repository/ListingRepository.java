@@ -26,4 +26,6 @@ public interface ListingRepository extends JpaRepository<Listing, Long> {
             " WHERE picture.isCover = true")
     Page<Listing> findAllWithCoverOnly(Pageable pageable);
 
+
+
 }

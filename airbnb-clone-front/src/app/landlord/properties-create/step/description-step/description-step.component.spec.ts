@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { DescriptionStepComponent } from './description-step.component';
+import {DescriptionStepComponent} from './description-step.component';
 
 describe('DescriptionStepComponent', () => {
   let component: DescriptionStepComponent;
@@ -11,7 +11,7 @@ describe('DescriptionStepComponent', () => {
       imports: [DescriptionStepComponent]
     })
     .compileComponents();
-    
+
     fixture = TestBed.createComponent(DescriptionStepComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

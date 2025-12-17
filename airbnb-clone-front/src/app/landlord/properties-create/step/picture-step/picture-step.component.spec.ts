@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { PictureStepComponent } from './picture-step.component';
+import {PictureStepComponent} from './picture-step.component';
 
 describe('PictureStepComponent', () => {
   let component: PictureStepComponent;
@@ -11,7 +11,7 @@ describe('PictureStepComponent', () => {
       imports: [PictureStepComponent]
     })
     .compileComponents();
-    
+
     fixture = TestBed.createComponent(PictureStepComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

@@ -1,16 +1,13 @@
-import { Component, effect, EventEmitter, inject, input, Output } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { LeafletModule } from '@asymmetrik/ngx-leaflet';
-import { AutoCompleteModule, AutoCompleteCompleteEvent,  AutoCompleteSelectEvent } from 'primeng/autocomplete';
-import { CountryService } from '../country.service';
-import { ToastService } from '../../../../../layout/toast.service';
-import { OpenStreetMapProvider } from 'leaflet-geosearch';
-import type { Country } from '../country.model';
-import L, { circle, latLng, polygon, tileLayer } from 'leaflet';
+import {Component, effect, EventEmitter, inject, input, Output} from '@angular/core';
+import {LeafletModule} from "@asymmetrik/ngx-leaflet";
+import {FormsModule} from "@angular/forms";
+import {AutoCompleteCompleteEvent, AutoCompleteModule, AutoCompleteSelectEvent} from "primeng/autocomplete";
+import {CountryService} from "../country.service";
+import {ToastService} from "../../../../../layout/toast.service";
+import {OpenStreetMapProvider} from "leaflet-geosearch";
+import {Country} from "../country.model";
+import L, {circle, latLng, polygon, tileLayer} from "leaflet";
 import {filter} from "rxjs";
-
-
-
 
 @Component({
   selector: 'app-location-map',
@@ -24,6 +21,7 @@ import {filter} from "rxjs";
   styleUrl: './location-map.component.scss'
 })
 export class LocationMapComponent {
+
   countryService = inject(CountryService);
   toastService = inject(ToastService);
 
@@ -35,17 +33,10 @@ export class LocationMapComponent {
 
   currentLocation: Country | undefined;
 
-
   @Output()
   locationChange = new EventEmitter<string>();
 
-  formatLabel = (country: Country) => {
-  const flagEmoji = country.cca2
-    ? String.fromCodePoint(...country.cca2.toUpperCase().split('').map(c => 0x1F1E6 + (c.charCodeAt(0) - 65)))
-    : '';
-  return flagEmoji + '  ' + country.name.common;
-};
-
+  formatLabel = (country: Country) => country.flag + "   " + country.name.common;
 
   options = {
     layers: [
@@ -71,61 +62,62 @@ export class LocationMapComponent {
   countries: Array<Country> = [];
   filteredCountries: Array<Country> = [];
 
-  constructor(){
+
+  constructor() {
     this.listenToLocation();
   }
 
-  onMapReady(map: L.Map): void{
+  onMapReady(map: L.Map) {
     this.map = map;
     this.configSearchControl();
   }
 
-  private configSearchControl(): void {
+  private configSearchControl() {
     this.provider = new OpenStreetMapProvider();
   }
 
-  onLocationChange(newEvent: AutoCompleteSelectEvent):void{
+  onLocationChange(newEvent: AutoCompleteSelectEvent) {
     const newCountry = newEvent.value as Country;
     this.locationChange.emit(newCountry.cca3);
-
   }
 
-  private listenToLocation():void{
-    effect(()=>{
+  private listenToLocation() {
+    effect(() => {
       const countriesState = this.countryService.countries();
-      if(countriesState.status === "OK" && countriesState.value){
+      if (countriesState.status === "OK" && countriesState.value) {
         this.countries = countriesState.value;
         this.filteredCountries = countriesState.value;
         this.changeMapLocation(this.location())
-      }else if(countriesState.status === "ERROR"){
+      } else if (countriesState.status === "ERROR") {
         this.toastService.send({
-          severity: "error", summary: "Error", detail:"Something went wrong when loading countries on change location "
-        })
+          severity: "error", summary: "Error",
+          detail: "Something went wrong when loading countries on change location"
+        });
       }
     });
   }
 
-  private changeMapLocation(term: string): void{
+  private changeMapLocation(term: string) {
     this.currentLocation = this.countries.find(country => country.cca3 === term);
-    if(this.currentLocation){
+    if (this.currentLocation) {
       this.provider!.search({query: this.currentLocation.name.common})
-      .then(results=>{
-        if(results && results.length>0){
-          const firstResult = results[0];
-          this.map!.setView(new L.LatLng(firstResult.y,firstResult.x),13);
-          L.marker([firstResult.y,firstResult.x])
-            .addTo(this.map!)
-            .bindPopup(firstResult.label)
-          .openPopup();
-        }
-      })
+        .then((results) => {
+          if (results && results.length > 0) {
+            const firstResult = results[0];
+            this.map!.setView(new L.LatLng(firstResult.y, firstResult.x), 13);
+            L.marker([firstResult.y, firstResult.x])
+              .addTo(this.map!)
+              .bindPopup(firstResult.label)
+              .openPopup();
+          }
+        })
     }
   }
 
-  search(newCompleteEvent: AutoCompleteCompleteEvent):void{
-    this.filteredCountries = this.countries.filter(country => country.name.common.toLowerCase().startsWith(newCompleteEvent.query))
+  search(newCompleteEvent: AutoCompleteCompleteEvent): void {
+    this.filteredCountries =
+      this.countries.filter(country => country.name.common.toLowerCase().startsWith(newCompleteEvent.query))
   }
+
   protected readonly filter = filter;
-
-
 }

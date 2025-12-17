@@ -1,15 +1,18 @@
-import { Component, EventEmitter, input, Output } from '@angular/core';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import type { Step } from '../../landlord/properties-create/step.model';
+import {Component, EventEmitter, input, Output} from '@angular/core';
+import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
+import {Step} from "../../landlord/properties-create/step.model";
 
 @Component({
   selector: 'app-footer-step',
   standalone: true,
-  imports: [FontAwesomeModule],
+  imports: [
+    FontAwesomeModule
+  ],
   templateUrl: './footer-step.component.html',
   styleUrl: './footer-step.component.scss'
 })
 export class FooterStepComponent {
+
   currentStep = input.required<Step>();
   loading = input<boolean>(false);
   isAllStepsValid = input<boolean>(false);
@@ -22,15 +25,15 @@ export class FooterStepComponent {
   @Output()
   next = new EventEmitter<boolean>();
 
-  onFinish(): void {
+  onFinish() {
     this.finish.emit(true);
   }
 
-  onPrevious(): void {
+  onPrevious() {
     this.previous.emit(true);
   }
 
-  onNext(): void {
+  onNext() {
     this.next.emit(true);
   }
 

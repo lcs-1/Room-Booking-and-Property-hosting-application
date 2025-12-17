@@ -1,16 +1,18 @@
-import { Component, EventEmitter, inject, input, Output } from '@angular/core';
-import type { Category, CategoryName } from '../../../../layout/navbar/category/category.model';
-import { CategoryService } from '../../../../layout/navbar/category/category.service';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import {Component, EventEmitter, inject, input, OnInit, Output} from '@angular/core';
+import {FaIconComponent} from "@fortawesome/angular-fontawesome";
+import {Category, CategoryName} from "../../../../layout/navbar/category/category.model";
+import {CategoryService} from "../../../../layout/navbar/category/category.service";
 
 @Component({
   selector: 'app-category-step',
   standalone: true,
-  imports: [FontAwesomeModule],
+  imports: [
+    FaIconComponent
+  ],
   templateUrl: './category-step.component.html',
   styleUrl: './category-step.component.scss'
 })
-export class CategoryStepComponent {
+export class CategoryStepComponent implements OnInit {
 
   categoryName = input.required<CategoryName>();
 
@@ -21,18 +23,14 @@ export class CategoryStepComponent {
   stepValidityChange = new EventEmitter<boolean>();
 
   categoryService = inject(CategoryService);
-
-  categories:Category[] | undefined;
+  categories: Category[] | undefined;
 
   ngOnInit(): void {
-    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
-    //Add 'implements OnInit' to the class.
     this.categories = this.categoryService.getCategories();
   }
 
-  onSelectCategory(newCategory: CategoryName): void{
+  onSelectCategory(newCategory: CategoryName): void {
     this.categoryChange.emit(newCategory);
     this.stepValidityChange.emit(true);
   }
-
 }

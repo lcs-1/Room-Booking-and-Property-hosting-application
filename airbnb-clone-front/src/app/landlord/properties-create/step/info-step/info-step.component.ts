@@ -1,13 +1,11 @@
-import { NewListingInfo } from './../../../model/listing.model';
-import { Component, EventEmitter, input, Output } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { ButtonModule } from 'primeng/button';
-import { fontAwesomeIcons } from '../../../../shared/font-awesome-icons';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { InfoStepControlComponent } from './info-step-control/info-step-control.component';
+import {Component, EventEmitter, input, Output} from '@angular/core';
+import {FormsModule} from "@angular/forms";
+import {ButtonModule} from "primeng/button";
+import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
+import {InfoStepControlComponent} from "./info-step-control/info-step-control.component";
+import {NewListingInfo} from "../../../model/listing.model";
 
-export type Control =  "GUESTS" | "BEDROOMS" | "BEDS" | "BATHS"
-
+export type Control = "GUESTS" | "BEDROOMS" | "BEDS" | "BATHS"
 
 @Component({
   selector: 'app-info-step',
@@ -26,28 +24,28 @@ export class InfoStepComponent {
   @Output()
   stepValidityChange = new EventEmitter<boolean>();
 
-
-  onInfoChange(newValue: number, valueType: Control){
-    switch(valueType){
-      case "GUESTS":
-        this.infos().guests = {value: newValue};
+  onInfoChange(newValue: number, valueType: Control) {
+    switch (valueType) {
+      case "BATHS":
+        this.infos().baths = {value: newValue}
         break;
       case "BEDROOMS":
-        this.infos().bedrooms = {value: newValue};
+        this.infos().bedrooms = {value: newValue}
         break;
       case "BEDS":
-        this.infos().beds = {value: newValue};
+        this.infos().beds = {value: newValue}
         break;
-      case "BATHS":
-        this.infos().baths = {value: newValue};
-        break;
+      case "GUESTS":
+        this.infos().guests = {value: newValue}
+        break
     }
 
     this.infoChange.emit(this.infos());
     this.stepValidityChange.emit(this.validationRules());
   }
 
-  validationRules(): boolean{
+  validationRules(): boolean {
     return this.infos().guests.value >= 1;
   }
+
 }

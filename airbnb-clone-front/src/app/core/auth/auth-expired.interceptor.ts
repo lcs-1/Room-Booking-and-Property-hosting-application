@@ -1,7 +1,7 @@
-import type { HttpErrorResponse, HttpHandlerFn, HttpInterceptor, HttpInterceptorFn, HttpRequest } from "@angular/common/http";
-import { inject } from "@angular/core";
-import { AuthService } from "./auth.service";
-import { tap } from "rxjs";
+import {HttpErrorResponse, HttpHandlerFn, HttpInterceptorFn, HttpRequest} from "@angular/common/http";
+import {inject} from "@angular/core";
+import {AuthService} from "./auth.service";
+import {tap} from "rxjs";
 
 export const authExpired: HttpInterceptorFn = (
   req: HttpRequest<unknown>,
@@ -10,11 +10,10 @@ export const authExpired: HttpInterceptorFn = (
   const authService = inject(AuthService);
   return next(req).pipe(
     tap({
-      error: (err: HttpErrorResponse) =>{
-        if(err.status === 401 && err.url && !err.url.includes("api/auth") && authService.isAuthenticated()){
+      error: (err: HttpErrorResponse) => {
+        if(err.status === 401 && err.url && !err.url.includes("api/auth") && authService.isAuthenticated()) {
           authService.login();
         }
-
       }
     })
   )

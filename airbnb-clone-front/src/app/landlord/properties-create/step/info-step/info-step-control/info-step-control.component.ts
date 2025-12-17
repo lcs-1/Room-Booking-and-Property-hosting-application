@@ -1,14 +1,17 @@
-import { Component, EventEmitter, input, Output } from '@angular/core';
-import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
+import {Component, EventEmitter, input, Output} from '@angular/core';
+import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 
 @Component({
   selector: 'app-info-step-control',
   standalone: true,
-  imports: [FontAwesomeModule],
+  imports: [
+    FaIconComponent
+  ],
   templateUrl: './info-step-control.component.html',
   styleUrl: './info-step-control.component.scss'
 })
 export class InfoStepControlComponent {
+
   title = input.required<string>();
   value = input.required<number>();
   minValue = input<number>(0);
@@ -18,12 +21,12 @@ export class InfoStepControlComponent {
 
   separator = input<boolean>(true);
 
-  onIncrement(): void {
+  onIncrement() {
     this.valueChange.emit(this.value() + 1);
   }
 
-  onDecrement(): void {
-    this.valueChange.emit(this.value()-1);
+  onDecrement() {
+    this.valueChange.emit(this.value() - 1);
   }
 
 }

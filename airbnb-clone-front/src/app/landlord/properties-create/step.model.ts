@@ -1,6 +1,6 @@
-export interface Step{
+export interface Step {
   id: string,
-  idNext: string| null,
+  idNext: string | null,
   idPrevious: string | null,
   isValid: boolean
 }

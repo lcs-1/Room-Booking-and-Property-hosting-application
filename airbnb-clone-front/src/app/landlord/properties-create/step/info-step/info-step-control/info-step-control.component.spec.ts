@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { InfoStepControlComponent } from './info-step-control.component';
+import {InfoStepControlComponent} from './info-step-control.component';
 
 describe('InfoStepControlComponent', () => {
   let component: InfoStepControlComponent;
@@ -11,7 +11,7 @@ describe('InfoStepControlComponent', () => {
       imports: [InfoStepControlComponent]
     })
     .compileComponents();
-    
+
     fixture = TestBed.createComponent(InfoStepControlComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
